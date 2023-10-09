@@ -9,6 +9,7 @@ from str_int import StrInt
 from str_float import StrFloat
 from str_struct import StrStruct
 from str_const import StrConst
+from str_default import StrDefault
 from str_construct_exceptions import StrConstructParseError
 
 class TestStrStruct:
@@ -56,6 +57,7 @@ class TestStrStruct:
     def test_build_with_nameless_fields(self):
         packet = StrStruct(
             StrConst(">>"),
+            StrDefault(StrFloat("0.3f"), 2.345),
             "field2" / StrInt("02X"),
             separator=",",
         )
@@ -64,7 +66,7 @@ class TestStrStruct:
                 "field2": 15,
             }
         )
-        assert output == ">>,0F"
+        assert output == ">>,2.345,0F"
 
     def test_parse_simple(self):
         packet = StrStruct(
