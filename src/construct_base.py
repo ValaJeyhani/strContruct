@@ -23,7 +23,9 @@ class ConstructBase:
     def _parse(self, string):
         raise NotImplementedError("Should be overridden by the child classes")
 
-    def build(self, value):
+    def build(self, value=None):
+        # Some StrConstruct class do not necessarily need a value for building. StrConst
+        # and StrDefault are sample examples.
         return self._build(value)
 
     def parse(self, string):
