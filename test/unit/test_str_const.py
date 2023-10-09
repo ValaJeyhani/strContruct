@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "../../src"))
 from str_const import StrConst
 from str_construct_exceptions import StrConstructParseError
 
-class TestStrStruct:
+class TestStrConst:
     def test_build_fails_with_value(self):
         packet = StrConst("MyString")
         with pytest.raises(ValueError):
