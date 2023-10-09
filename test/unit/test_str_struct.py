@@ -9,6 +9,7 @@ from str_int import StrInt
 from str_float import StrFloat
 from str_struct import StrStruct
 from str_const import StrConst
+from str_construct_exceptions import StrConstructParseError
 
 class TestStrStruct:
     def test_field_type(self):
@@ -80,17 +81,34 @@ class TestStrStruct:
 
             }
 
-    @pytest.mark.xfail(
-        reason="Needs StrConstruct objects that can build without values e.g. StrDefault"
-    )
     def test_parse_with_nameless_fields(self):
         packet = StrStruct(
-            StrInt(""),
-            "field2" / StrInt("02X"),
+            StrConst("@>"),
+            "field2" / StrInt("03x"),
             separator=",",
         )
-        output = packet.parse()
-        assert output == ""  # ?
+        output = packet.parse("@>,00a")
+        assert output == {"field2": 10}
+        with pytest.raises(StrConstructParseError):
+            packet.parse("00a")
+        with pytest.raises(StrConstructParseError):
+            packet.parse(",00a")
+        with pytest.raises(StrConstructParseError):
+            packet.parse(">,00a")
+        with pytest.raises(StrConstructParseError):
+            packet.parse("@,00a")
+
+    def test_parse_with_underscored_fields(self):
+        packet = StrStruct(
+            StrConst("@>"),
+            "_field2" / StrInt("03x"),
+            "_field3" / StrInt("02x"),
+            separator=",",
+        )
+        output = packet.parse("@>,00a,0f")
+        assert output == {}
+        with pytest.raises(StrConstructParseError):
+            packet.parse("")
 
     def test_build_nested(self):
         packet = StrStruct(

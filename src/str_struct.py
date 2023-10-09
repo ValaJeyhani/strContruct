@@ -50,8 +50,13 @@ class StrStruct(ConstructBase):
             # What if the separator is also present in a constant field?
             raise StrConstructParseError("Bad input")
 
-        output = {}
+        outputs = {}
         for field, value in zip(self._fields, values):
-            output[field.name] = field.parse(value)
+            # If the field is nameless or if it starts with an underscore, exclude
+            # those fields from the output. But we still need to parse to make sure
+            # that the input string is compliant with the defined protocol.
+            output = field.parse(value)
+            if field.name is not None and field.name[0] != "_":
+                outputs[field.name] = field.parse(value)
 
-        return output
+        return outputs
