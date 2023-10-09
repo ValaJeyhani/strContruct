@@ -1,7 +1,7 @@
 from parse import parse
 
 from construct_base import ConstructBase
-from str_construct_exceptions import StrConstructParsingError
+from str_construct_exceptions import StrConstructParseError
 
 class StrFloat(ConstructBase):
     def _build(self, value):
@@ -17,5 +17,5 @@ class StrFloat(ConstructBase):
         format_ = format_.replace("f}", "g}")
         parsed = parse(f"{format_}", string, case_sensitive=True)
         if parsed is None:
-            raise StrConstructParsingError(f"Could not parse \"{string}\" with format {self._format}")
+            raise StrConstructParseError(f"Could not parse \"{string}\" with format {self._format}")
         return parsed[0]

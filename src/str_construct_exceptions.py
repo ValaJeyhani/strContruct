@@ -13,7 +13,14 @@ class StrConstructMismatchingFormatError(StrConstructError):
         StrConstructError (_type_): _description_
     """
 
-class StrConstructParsingError(StrConstructError):
+class StrConstructParseError(StrConstructError):
+    """_summary_
+
+    Args:
+        StrConstructError (_type_): _description_
+    """
+
+class StrConstructBuildError(StrConstructError):
     """_summary_
 
     Args:
