@@ -8,6 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "../../src"))
 from str_int import StrInt
 from str_float import StrFloat
 from str_struct import StrStruct
+from str_const import StrConst
 
 class TestStrStruct:
     def test_field_type(self):
@@ -51,13 +52,9 @@ class TestStrStruct:
         output = packet.build({})
         assert output == ""
 
-
-    @pytest.mark.xfail(
-        reason="Needs StrConstruct objects that can build without values e.g. StrDefault"
-    )
     def test_build_with_nameless_fields(self):
         packet = StrStruct(
-            StrInt(""),
+            StrConst(">>"),
             "field2" / StrInt("02X"),
             separator=",",
         )
@@ -66,7 +63,7 @@ class TestStrStruct:
                 "field2": 15,
             }
         )
-        assert output == ""  # ?
+        assert output == ">>,0F"
 
     def test_parse_simple(self):
         packet = StrStruct(
