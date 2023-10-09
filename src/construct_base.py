@@ -1,18 +1,21 @@
 class ConstructBase:
-    def __init__(self, format_, name=None):
-        self._format = f"{{:{format_}}}"
-        self._name = name
+    def __init__(self, format_, name=None, format_processed=False):
+        if format_processed is False:
+            self._format = f"{{:{format_}}}"
+        else:
+            self._format = format_
+        self.name = name
 
-    def __div(self, other):
+    def _div(self, other):
         if not isinstance(other, str):
             raise TypeError("Division is support only for strings")
-        return ConstructBase(self._format, other)
+        return self.__class__(self._format, other, format_processed=True)
 
     def __truediv__(self, other):
-        return self.__div(other)
+        return self._div(other)
 
     def __rtruediv__(self, other):
-        return self.__div(other)
+        return self._div(other)
 
     def _build(self, value):
         raise NotImplementedError("Should be overridden by the child classes")
