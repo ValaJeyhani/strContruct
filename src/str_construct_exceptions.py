@@ -12,3 +12,10 @@ class StrConstructMismatchingFormatError(StrConstructError):
     Args:
         StrConstructError (_type_): _description_
     """
+
+class StrConstructParsingError(StrConstructError):
+    """_summary_
+
+    Args:
+        StrConstructError (_type_): _description_
+    """
