@@ -2,8 +2,8 @@ from construct_base import ConstructBase
 from str_construct_exceptions import StrConstructParseError
 
 class StrConst(ConstructBase):
-    def __init__(self, const, name=None):
-        self.name = name
+    def __init__(self, const):
+        self.name = None
         self._const = const
 
     def _build(self, value):

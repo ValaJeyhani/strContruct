@@ -1,25 +1,17 @@
+
 from construct_base import ConstructBase
 from str_construct_exceptions import StrConstructParseError
 
 class StrInt(ConstructBase):
-    def __init__(self, format_, name=None, format_processed=False):
-        self.name = name
+    def __init__(self, format_):
+        self.name = None
+        self._format = f"{{:{format_}}}"
 
         if len(format_) == 0:
             raise ValueError(
                 "Invalid format. At least the integer representation should be "
                 "provided (e.g. 'd', 'x' etc.)"
             )
-
-        # TODO: This doesn't seem ideal anymore. I can add a new method (e.g. _get_named)
-        # that returns a named object and copies the whole rest of the object
-        if format_[0] != "{":  # Not constructed yet
-            self._format = f"{{:{format_}}}"
-        else:
-            self._format = format_
-            if format_[1] != ":":  # Just to confirm
-                raise ValueError("Format needs to be either in format of {{:<format>}} or <format>")
-            format_ = format_[2:-1]
 
         self._format_type = format_[-1]
         if self._format_type not in ["d", "x", "X"]:

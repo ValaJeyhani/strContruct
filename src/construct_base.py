@@ -1,15 +1,13 @@
 class ConstructBase:
-    def __init__(self, format_, name=None, format_processed=False):
-        if format_processed is False:
-            self._format = f"{{:{format_}}}"
-        else:
-            self._format = format_
-        self.name = name
+    def __init__(self, format_):
+        self._format = f"{{:{format_}}}"
+        self.name = None
 
     def _div(self, other):
         if not isinstance(other, str):
             raise TypeError("Division is support only for strings")
-        return self.__class__(self._format, other, format_processed=True)
+        self.name = other
+        return self
 
     def __truediv__(self, other):
         return self._div(other)
