@@ -6,20 +6,20 @@ import pytest
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../src"))
 
 from str_int import StrInt
-from str_construct_exceptions import StrConstructMismatchingFormatError
+from str_construct_exceptions import StrConstructParseError
 
 class TestStrInt:
     def test_build_positive(self):
-        assert StrInt("").build(2) == "2"
+        assert StrInt("d").build(2) == "2"
 
     def test_parse_positive(self):
-        assert StrInt("").parse("2") == 2
+        assert StrInt("d").parse("2") == 2
 
     def test_build_negative(self):
-        assert StrInt("").build(-2) == "-2"
+        assert StrInt("d").build(-2) == "-2"
 
     def test_parse_negative(self):
-        assert StrInt("").parse("-2") == -2
+        assert StrInt("d").parse("-2") == -2
 
     def test_build_hex_lower_case(self):
         assert StrInt("x").build(15) == "f"
@@ -27,14 +27,24 @@ class TestStrInt:
     def test_parse_hex_lower_case(self):
         assert StrInt("x").parse("f") == 15
 
-    @pytest.mark.xfail()
     def test_parse_hex_lower_case_raises_error(self):
-        with pytest.raises(StrConstructMismatchingFormatError):
+        with pytest.raises(StrConstructParseError):
             StrInt("x").parse("F")
 
     def test_build_hex_padding(self):
         assert StrInt("03X").build(10) == "00A"
 
-    @pytest.mark.xfail()
     def test_parse_hex_padding(self):
         assert StrInt("03X").parse("00A") == 10
+
+    def test_parse_longer_input_than_format(self):
+        assert StrInt("03X").parse("00A1394756") == 10
+        assert StrInt("1X").parse("40A1394756") == 4
+        assert StrInt("1d").parse("123") == 1
+        assert StrInt("2d").parse("123") == 12
+        assert StrInt("3d").parse("123") == 123
+
+    def test_parse_shorter_input_than_format(self):
+        with pytest.raises(StrConstructParseError) as info:
+            StrInt("3d").parse("12")
+            assert info.value.message.startswith("Insufficient characters found")

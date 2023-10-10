@@ -10,7 +10,10 @@ class StrStruct(ConstructBase):
                     "All items need to be of type ConstructBase (e.g. StrFloat, StrInt, etc.). Found "
                     f"a {type(item)}."
                 )
-        self._separator = kwargs["separator"]
+        try:
+            self._separator = kwargs["separator"]
+        except KeyError:
+            self._separator = ""
         self.name = kwargs["name"] if "name" in kwargs.keys() else None
         self._fields = args
 
