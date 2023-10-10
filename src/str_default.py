@@ -1,10 +1,10 @@
 from construct_base import ConstructBase
 
 class StrDefault(ConstructBase):
-    def __init__(self, construct, default, name=None, format_processed=False):
+    def __init__(self, construct, default):
         self._subconstruct = construct
         self._default = default
-        self.name = name
+        self.name = None
 
     def _build(self, value):
         if value is None:
