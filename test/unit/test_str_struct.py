@@ -18,13 +18,13 @@ class TestStrStruct:
             StrStruct("")
 
         StrStruct(
-            "field1" / StrInt(""),
+            "field1" / StrInt("d"),
             separator=",",
         )
 
     def test_build_type(self):
         packet = StrStruct(
-            "field1" / StrInt(""),
+            "field1" / StrInt("d"),
             separator=",",
         )
         with pytest.raises(TypeError):
@@ -32,7 +32,7 @@ class TestStrStruct:
 
     def test_build_simple(self):
         packet = StrStruct(
-            "field1" / StrInt(""),
+            "field1" / StrInt("d"),
             "field2" / StrInt("02X"),
             "field3" / StrFloat(".2f"),
             separator=",",
@@ -70,7 +70,7 @@ class TestStrStruct:
 
     def test_parse_simple(self):
         packet = StrStruct(
-            "field1" / StrInt(""),
+            "field1" / StrInt("d"),
             "field2" / StrInt("02x"),
             "field3" / StrFloat(".2f"),
             separator=",",
@@ -114,7 +114,7 @@ class TestStrStruct:
 
     def test_build_nested(self):
         packet = StrStruct(
-            "field1" / StrInt(""),
+            "field1" / StrInt("d"),
             "field2" / StrInt("02X"),
             "field3" / StrStruct(
                 "field4" / StrFloat(".2f"),
@@ -135,7 +135,7 @@ class TestStrStruct:
         assert output == "2,0F,3.10"
 
         packet = StrStruct(
-            "field1" / StrInt(""),
+            "field1" / StrInt("d"),
             "field2" / StrInt("02X"),
             "field3" / StrStruct(
                 "field4" / StrFloat(".2f"),
