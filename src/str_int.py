@@ -23,9 +23,13 @@ class StrInt(ConstructBase):
         elif self._format_type == "X":
             self._supported_chars += [chr(item) for item in range(ord("A"), ord("F") + 1)]
 
+        if format_[0] == "0":
+            _format_length = format_[1:-1]
+        else:
+            _format_length = format_[0:-1]
         try:
-            self._format_length = int(format_[-2])
-        except IndexError:
+            self._format_length = int(_format_length)
+        except ValueError:
             self._format_length = None
 
     def _build(self, value):
