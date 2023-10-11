@@ -28,7 +28,3 @@ class ConstructBase:
 
     def parse(self, string):
         return self._parse(string)
-
-if __name__ == "__main__":
-    m = ConstructBase("")
-    m / "my_name"

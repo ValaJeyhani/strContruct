@@ -1,21 +1,37 @@
-from parse import parse
-
 from construct_base import ConstructBase
 from str_construct_exceptions import StrConstructParseError
 
 class StrFloat(ConstructBase):
+    def __init__(self, format_):
+        self.name = None
+        self._format = f"{{:{format_}}}"
+
+        if len(format_) == 0:
+            raise ValueError("Invalid format. Only 'f' is supported by StrFloat")
+
+        self._format_type = format_[-1]
+        if self._format_type != "f":
+            raise ValueError(f"Format ({self._format_type}) not supported by StrFloat")
+
+        break_down = format_[:-1].split(".")
+        if len(break_down) == 1:
+            self._format_length = 0
+        else:
+            self._format_length = int(break_down[1])
+
     def _build(self, value):
         return f"{self._format}".format(value)
 
     def _parse(self, string):
-
-        format_= self._format
-        if format_ == "{:}":
-            format_ = "{:f}"
-        # A workaround for the parse module as its required format for floating-point
-        # numbers is "g" rather than "f"
-        format_ = format_.replace("f}", "g}")
-        parsed = parse(f"{format_}", string, case_sensitive=True)
-        if parsed is None:
-            raise StrConstructParseError(f"Could not parse \"{string}\" with format {self._format}")
-        return parsed[0]
+        break_down = string.split(".")
+        if len(break_down) == 1:
+            whole = break_down[0]
+            decimal = ""
+        else:
+            whole, decimal = break_down[0:2]
+        if len(decimal) < self._format_length:
+            raise StrConstructParseError(
+                f"Insufficient characters found. At least {self._format_length} "
+                "decimal numbers are needed"
+            )
+        return float(".".join([whole, decimal[:self._format_length]]))
