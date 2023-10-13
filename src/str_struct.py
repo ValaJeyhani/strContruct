@@ -47,19 +47,17 @@ class StrStruct(ConstructBase):
         return self._separator.join(outputs)
 
     def _parse(self, string):
-        values = string.split(self._separator)
-
-        if len(values) != len(self._fields):
-            # What if the separator is also present in a constant field?
-            raise StrConstructParseError("Bad input")
-
         outputs = {}
-        for field, value in zip(self._fields, values):
-            # If the field is nameless or if it starts with an underscore, exclude
-            # those fields from the output. But we still need to parse to make sure
-            # that the input string is compliant with the defined protocol.
-            output = field.parse(value)
+        for index, field in enumerate(self._fields):
+            output = field.parse(string)
             if field.name is not None and field.name[0] != "_":
-                outputs[field.name] = field.parse(value)
+                outputs[field.name] = output
+            string = field.parse_left()
+
+            # No need to check the separator for the last item
+            if index != (len(self._fields) - 1) and self._separator != "":
+                if not string.startswith(self._separator):
+                    raise StrConstructParseError(f"Separator ('{self._separator}') not found")
+                string = string[len(self._separator):]
 
         return outputs

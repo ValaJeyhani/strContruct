@@ -14,10 +14,12 @@ class StrFloat(ConstructBase):
             raise ValueError(f"Format ({self._format_type}) not supported by StrFloat")
 
         break_down = format_[:-1].split(".")
-        if len(break_down) == 1:
-            self._format_length = 0
-        else:
+        try:
             self._format_length = int(break_down[1])
+        # ValueError happens if breakdown[1] is an empty string
+        # IndexError happens if there is not index 1 at all
+        except (ValueError, IndexError):
+            self._format_length = 0
 
     def _build(self, value):
         return f"{self._format}".format(value)
@@ -34,4 +36,5 @@ class StrFloat(ConstructBase):
                 f"Insufficient characters found. At least {self._format_length} "
                 "decimal numbers are needed"
             )
+        self._parse_left = string[(len(whole) + 1 + self._format_length):]
         return float(".".join([whole, decimal[:self._format_length]]))

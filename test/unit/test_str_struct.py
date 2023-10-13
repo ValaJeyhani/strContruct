@@ -14,6 +14,7 @@ from str_construct_exceptions import StrConstructParseError
 
 class TestStrStruct:
     def test_field_type(self):
+        # TypeError: All items need to be of type ConstructBase
         with pytest.raises(TypeError):
             StrStruct("")
 
@@ -27,6 +28,7 @@ class TestStrStruct:
             "field1" / StrInt("d"),
             separator=",",
         )
+        # TypeError: The value for building an StrConstruct should be a dict
         with pytest.raises(TypeError):
             packet.build(2)
 
@@ -35,7 +37,6 @@ class TestStrStruct:
             "field1" / StrInt("d"),
             "field2" / StrInt("02X"),
             "field3" / StrFloat(".2f"),
-            separator=",",
         )
         output = packet.build(
             {
@@ -45,14 +46,28 @@ class TestStrStruct:
 
             }
         )
-        assert output == "2,0F,3.10"
+        assert output == "20F3.10"
+        packet = StrStruct(
+            "field1" / StrInt("d"),
+            "field2" / StrInt("02X"),
+            "field3" / StrFloat(".2f"),
+            separator=":"
+        )
+        output = packet.build(
+            {
+                "field1": 2,
+                "field2": 15,
+                "field3": 3.1,
+
+            }
+        )
+        assert output == "2:0F:3.10"
 
     def test_build_empty(self):
-        packet = StrStruct(
-            separator=",",
-        )
-        output = packet.build({})
-        assert output == ""
+        packet = StrStruct(separator=",")
+        assert packet.build({}) == ""
+        packet = StrStruct()
+        assert packet.build({}) == ""
 
     def test_build_with_nameless_fields(self):
         packet = StrStruct(
@@ -68,6 +83,18 @@ class TestStrStruct:
         )
         assert output == ">>,2.345,0F"
 
+        packet = StrStruct(
+            StrConst(">>"),
+            StrDefault(StrFloat("0.3f"), 2.345),
+            "field2" / StrInt("02X"),
+        )
+        output = packet.build(
+            {
+                "field2": 15,
+            }
+        )
+        assert output == ">>2.3450F"
+
     def test_parse_simple(self):
         packet = StrStruct(
             "field1" / StrInt("d"),
@@ -75,13 +102,23 @@ class TestStrStruct:
             "field3" / StrFloat(".2f"),
             separator=",",
         )
-        output = packet.parse("2,0f,3.10")
-        assert output == {
-                "field1": 2,
-                "field2": 15,
-                "field3": 3.1,
+        assert  packet.parse("2,0f,3.10") == {
+            "field1": 2,
+            "field2": 15,
+            "field3": 3.1,
+        }
 
-            }
+    def test_parse_no_separator(self):
+        packet = StrStruct(
+            "field1" / StrInt("1d"),
+            "field2" / StrInt("02x"),
+            "field3" / StrFloat(".2f"),
+        )
+        assert  packet.parse("20f3.11") == {
+            "field1": 2,
+            "field2": 15,
+            "field3": 3.11,
+        }
 
     def test_parse_with_nameless_fields(self):
         packet = StrStruct(
@@ -140,7 +177,7 @@ class TestStrStruct:
             "field3" / StrStruct(
                 "field4" / StrFloat(".2f"),
                 "field5" / StrStruct(
-                    "field6" / StrFloat("03X"),
+                    "field6" / StrInt("03X"),
                     separator=",",
                 ),
                 separator=",",
