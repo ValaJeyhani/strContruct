@@ -13,8 +13,7 @@ class StrConst(ConstructBase):
         return self._const
 
     def _parse(self, string):
-        if string != self._const:
-            raise StrConstructParseError(
-                f"Received string ({string}) does not match the constant value ({self._const})"
-            )
-        return string
+        if not string.startswith(self._const):
+            raise StrConstructParseError(f"Expected '{self._const}' but found '{string}'")
+        self._parse_left = string[len(self._const) :]
+        return self._const

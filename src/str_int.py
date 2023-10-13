@@ -51,16 +51,21 @@ class StrInt(ConstructBase):
                     "character is needed"
                 )
             number = string[:self._format_length]
+            parse_left = string[self._format_length:]
         else:
             number = []
-            for char in string:
+            for index, char in enumerate(string):
                 if char in self._supported_chars:
                     number.append(char)
+                else:
+                    break
             number = "".join(number)
+            parse_left = string[index:]
 
         if number == "":
             raise StrConstructParseError("No numeric content collected from the input")
 
+        self._parse_left = parse_left
         if self._format_type == "d":
             return int(number) * multiplier
         if self._format_type == "x" or self._format_type == "X":

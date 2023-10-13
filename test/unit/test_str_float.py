@@ -15,6 +15,7 @@ class TestStrFloat:
 
     def test_parse_no_decimal(self):
         assert StrFloat(".0f").parse("2") == 2
+        assert StrFloat(".f").parse("2.") == 2
         assert isinstance(StrFloat("f").parse("2"), float)
         assert StrFloat(".0f").build(2.123) == "2"
 
