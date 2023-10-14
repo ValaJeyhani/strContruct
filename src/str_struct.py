@@ -1,6 +1,6 @@
 
-from construct_base import ConstructBase
-from str_construct_exceptions import StrConstructBuildError, StrConstructParseError
+from .construct_base import ConstructBase
+from .str_construct_exceptions import StrConstructBuildError, StrConstructParseError
 
 class StrStruct(ConstructBase):
     def __init__(self, *args, **kwargs):

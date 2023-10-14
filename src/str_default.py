@@ -1,4 +1,4 @@
-from construct_base import ConstructBase
+from .construct_base import ConstructBase
 
 class StrDefault(ConstructBase):
     def __init__(self, construct, default):
