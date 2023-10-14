@@ -1,16 +1,7 @@
-import sys
-import os
-
 import pytest
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../src"))
+from strconstruct import StrInt, StrFloat, StrStruct, StrConst, StrDefault, StrConstructParseError
 
-from str_int import StrInt
-from str_float import StrFloat
-from str_struct import StrStruct
-from str_const import StrConst
-from str_default import StrDefault
-from str_construct_exceptions import StrConstructParseError
 
 class TestStrStruct:
     def test_field_type(self):

@@ -1,12 +1,6 @@
-import sys
-import os
-
 import pytest
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../src"))
-
-from str_const import StrConst
-from str_construct_exceptions import StrConstructParseError
+from strconstruct import StrConst, StrConstructParseError
 
 class TestStrConst:
     def test_build_fails_with_value(self):

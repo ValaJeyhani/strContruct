@@ -1,13 +1,7 @@
-import sys
-import os
-
 import pytest
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../src"))
+from strconstruct import StrInt, StrFloat, StrDefault
 
-from str_int import StrInt
-from str_float import StrFloat
-from str_default import StrDefault
 
 class TestStrDefault:
     def test_build_with_value(self):

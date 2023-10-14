@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools >= 60.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "strconstruct"
+version = "0.0.1"
+requires-python = ">=3.7"
+description = "A declarative parser and builder for string-based protocols"
+license = {file = "LICENSE"}
+keywords = ["protocol", "declarative", "parse", "build", "string"]
+dependencies = []
+
+[tool.setuptools.package-dir]
+strconstruct = "src"
+
+[project.urls]
+# TODO: FIx the following URLs once the repo is public
+Homepage = "https://github.com/ValaJeyhani/strContruct"
+Documentation = "https://github.com/ValaJeyhani/strContruct"
+Repository = "https://github.com/ValaJeyhani/strContruct"

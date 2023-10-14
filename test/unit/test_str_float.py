@@ -1,12 +1,6 @@
-import sys
-import os
-
 import pytest
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../src"))
-
-from str_float import StrFloat
-from str_construct_exceptions import StrConstructParseError
+from strconstruct import StrFloat, StrConstructParseError
 
 class TestStrFloat:
     def test_build_no_decimal(self):

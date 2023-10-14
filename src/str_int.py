@@ -1,6 +1,5 @@
-
-from construct_base import ConstructBase
-from str_construct_exceptions import StrConstructParseError
+from .construct_base import ConstructBase
+from .str_construct_exceptions import StrConstructParseError
 
 class StrInt(ConstructBase):
     def __init__(self, format_):
