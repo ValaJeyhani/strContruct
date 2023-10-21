@@ -53,7 +53,7 @@ class StrFloat(ConstructBase):
         # ValueError happens if breakdown[1] is an empty string
         # IndexError happens if there is not index 1 at all
         except (ValueError, IndexError):
-            self._format_length = 0
+            self._format_length = None
 
     def _build(self, value):
         """Backend method for building strings representing floating-point numbers
@@ -75,10 +75,24 @@ class StrFloat(ConstructBase):
             decimal = ""
         else:
             whole, decimal = break_down[0:2]
-        if len(decimal) < self._format_length:
-            raise StrConstructParseError(
-                f"Insufficient characters found. At least {self._format_length} "
-                "decimal numbers are needed"
-            )
-        self._parse_left = string[(len(whole) + 1 + self._format_length):]
-        return float(".".join([whole, decimal[:self._format_length]]))
+        if self._format_length is not None:
+            if len(decimal) < self._format_length:
+                raise StrConstructParseError(
+                    f"Insufficient characters found. At least {self._format_length} "
+                    "decimal numbers are needed"
+                )
+            decimal = decimal[:self._format_length]
+        else:
+            if len(decimal) == 0:
+                index = 0
+            else:
+                for index, char in enumerate(decimal):
+                    if not char.isdigit():
+                        break
+                else:
+                    index += 1
+
+            decimal = decimal[:index]
+
+        self._parse_left = string[(len(whole) + 1 + len(decimal)) :]
+        return float(".".join([whole, decimal]))

@@ -104,11 +104,15 @@ class TestStrStruct:
             "field1" / StrInt("1d"),
             "field2" / StrInt("02x"),
             "field3" / StrFloat(".2f"),
+            "field4" / StrConst("@"),
+            "field5" / StrFloat(".2f"),
         )
-        assert  packet.parse("20f3.11") == {
+        assert  packet.parse("20f13.11@5.67") == {
             "field1": 2,
             "field2": 15,
-            "field3": 3.11,
+            "field3": 13.11,
+            "field4": "@",
+            "field5": 5.67
         }
 
     def test_parse_with_nameless_fields(self):
