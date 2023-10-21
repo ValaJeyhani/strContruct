@@ -24,7 +24,7 @@ class StrStruct(ConstructBase):
             raise TypeError("Division is support only for strings")
         return StrStruct(name=other, separator=self._separator, *self._fields)
 
-    def _build(self, values):
+    def _build(self, values, **kwargs):
         if not isinstance(values, dict):
             raise TypeError("The value for building an StrConstruct should be a dict")
 
@@ -35,18 +35,23 @@ class StrStruct(ConstructBase):
                 # build method of the corresponding object is expected to be able to build
                 # without a give value. Let's give it a try.
                 try:
-                    output = field.build()
+                    output = field.build(**kwargs)
                 except Exception as e:
                     raise StrConstructBuildError("Could not build the nameless field")
 
             else:
-                value = values[field.name]
-                output = field.build(value)
+                try:
+                    value = values[field.name]
+                except KeyError:
+                    # If the key-value pair is not provided, try to build it with no value
+                    output = field.build(**kwargs)
+                else:
+                    output = field.build(value, **kwargs)
             outputs.append(output)
 
         return self._separator.join(outputs)
 
-    def _parse(self, string):
+    def _parse(self, string, **kwargs):
         outputs = {}
         for index, field in enumerate(self._fields):
             output = field.parse(string)

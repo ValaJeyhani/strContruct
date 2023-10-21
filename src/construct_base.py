@@ -1,3 +1,6 @@
+from .str_construct_exceptions import StrConstructBuildError
+
+
 class ConstructBase:
     def __init__(self, format_):
         self._format = f"{{:{format_}}}"
@@ -16,19 +19,19 @@ class ConstructBase:
     def __rtruediv__(self, other):
         return self._div(other)
 
-    def _build(self, value):
+    def _build(self, value, **kwargs):
         raise NotImplementedError("Should be overridden by the child classes")
 
-    def _parse(self, string):
+    def _parse(self, string, **kwargs):
         raise NotImplementedError("Should be overridden by the child classes")
 
-    def build(self, value=None):
+    def build(self, value=None, **kwargs):
         # Some StrConstruct class do not necessarily need a value for building. StrConst
         # and StrDefault are sample examples.
-        return self._build(value)
+        return self._build(value, **kwargs)
 
-    def parse(self, string):
-        return self._parse(string)
+    def parse(self, string, **kwargs):
+        return self._parse(string, **kwargs)
 
     def parse_left(self):
         if self._parse_left is None:

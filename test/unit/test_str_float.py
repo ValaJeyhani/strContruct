@@ -3,15 +3,15 @@ import pytest
 from strconstruct import StrFloat, StrConstructParseError
 
 class TestStrFloat:
-#     def test_build_no_decimal(self):
-#         assert StrFloat(".0f").build(2) == "2"
-#         assert StrFloat(".0f").build(2.123) == "2"
+    def test_build_no_decimal(self):
+        assert StrFloat(".0f").build(2) == "2"
+        assert StrFloat(".0f").build(2.123) == "2"
 
     def test_parse_no_decimal_format(self):
-        # assert StrFloat(".0f").parse("2") == 2
-        # assert StrFloat(".f").parse("2.") == 2
+        assert StrFloat(".0f").parse("2") == 2
+        assert StrFloat(".f").parse("2.") == 2
         assert StrFloat(".f").parse(".2") == .2
-        # assert StrFloat(".1f").parse("1.2@3.4") == 1.2
+        assert StrFloat(".1f").parse("1.2@3.4") == 1.2
         assert isinstance(StrFloat("f").parse("2"), float)
         assert StrFloat(".0f").build(2.123) == "2"
 
