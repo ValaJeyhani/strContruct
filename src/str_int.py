@@ -2,7 +2,67 @@ from .construct_base import ConstructBase
 from .str_construct_exceptions import StrConstructParseError
 
 class StrInt(ConstructBase):
+    """StrInt can be used for building and parsing numeric fields. An StrInt, needs a format to
+    be constructed, similar to other str-construct classes. The constructed objects can be used
+    to build and parse strings.
+
+        >>> from strconstruct import StrInt
+        >>> StrInt("d").build(2)
+        '2'
+        >>> StrInt("d").build(-2)
+        '-2'
+        >>> StrInt("d").parse("3")
+        3
+        >>> StrInt("d").parse("-3")
+        -3
+
+    StrInt accepts, ``d``, ``x``, and ``X`` formats. They work set decimal, lower-case hex and
+    upper-case hex formats, respectively.
+
+        >>> StrInt("x").build(15)
+        'f'
+        >>> StrInt("X").build(15)
+        'F'
+        >>> StrInt("X").parse("F")
+        15
+
+    Similar to other str-construct classes, StrInt is strict with parsing. The following line
+    of code raises ``StrConstructParseError``.
+
+        >>> StrInt("x").parse("F")
+
+    Finally, all the formats accept lengths with an optional padding value of zero:
+
+        >>> StrInt("013X").build(10)
+        '000000000000A'
+        >>> StrInt("13X").parse("000000000000A")
+        10
+
+    If the expected number of characters is not received during parsing, a
+    ``StrConstructParseError`` is raise. For example, the parsing for the following lines code
+    will fail.
+
+        >>> StrInt("3d").parse("12")
+        >>> StrInt("13X").parse("00000000000A")
+
+    It's also important to note that when no length is specified, the search continues until
+    a non-parsable character is found. If there is a length, only that many of characters is
+    processed by the parser method.
+
+        >>> StrInt("d").parse("12345>")
+        12345
+        >>> StrInt("2d").parse("12345>")
+        12
+        >>> StrInt("02d").parse("12345>")
+        12
+
+    """
     def __init__(self, format_):
+        """
+        Args:
+            format_: The format of the StrInt. The supported values are ``d``, ``x``, and ``X``.
+                Length can also be specified with an optional padding value of zero.
+        """
         self.name = None
         self._format = f"{{:{format_}}}"
 
@@ -32,9 +92,19 @@ class StrInt(ConstructBase):
             self._format_length = None
 
     def _build(self, value):
+        """Backend method for building numeric strings
+
+        Args:
+            value: The value to be built
+        """
         return f"{self._format}".format(value)
 
     def _parse(self, string):
+        """Backend method for parsing numeric strings
+
+        Args:
+            string: The input string
+        """
         if string[0] == "-":
             multiplier = -1
             string = string[1:]
