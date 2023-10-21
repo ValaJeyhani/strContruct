@@ -193,3 +193,15 @@ class TestStrStruct:
             }
         )
         assert output == "2,0F,3.10,00A"
+
+    def test_named_const_build_no_value(self):
+        packet = StrStruct(
+            "field1" / StrInt("d"),
+            "_hidden" / StrConst("-"),
+        )
+        output = packet.build(
+            {
+                "field1": 12
+            }
+        )
+        assert output == "12-"
