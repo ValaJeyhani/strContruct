@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "strconstruct"
 version = "0.0.1"
-requires-python = ">=3.7"
+requires-python = ">=3.6"
 description = "A declarative parser and builder for string-based protocols"
 license = {file = "LICENSE"}
 keywords = ["protocol", "declarative", "parse", "build", "string"]

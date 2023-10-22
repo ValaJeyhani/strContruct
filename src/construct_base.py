@@ -2,11 +2,6 @@ from .str_construct_exceptions import StrConstructBuildError
 
 
 class ConstructBase:
-    def __init__(self, format_):
-        self._format = f"{{:{format_}}}"
-        self.name = None
-        self._parse_left = None
-
     def _div(self, other):
         if not isinstance(other, str):
             raise TypeError("Division is support only for strings")

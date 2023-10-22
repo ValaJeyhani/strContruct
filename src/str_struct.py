@@ -1,6 +1,6 @@
 
 from .construct_base import ConstructBase
-from .str_construct_exceptions import StrConstructBuildError, StrConstructParseError
+from .str_construct_exceptions import StrConstructBuildError, StrConstructParseError, StrStopFieldError
 
 class StrStruct(ConstructBase):
     def __init__(self, *args, **kwargs):
@@ -36,6 +36,9 @@ class StrStruct(ConstructBase):
                 # without a give value. Let's give it a try.
                 try:
                     output = field.build(**kwargs)
+                except StrStopFieldError:
+                    # Nothing problematic. The StopIf construct has signaled to stop building
+                    break
                 except Exception as e:
                     raise StrConstructBuildError("Could not build the nameless field")
 
@@ -44,9 +47,15 @@ class StrStruct(ConstructBase):
                     value = values[field.name]
                 except KeyError:
                     # If the key-value pair is not provided, try to build it with no value
-                    output = field.build(**kwargs)
+                    try:
+                        output = field.build(**kwargs)
+                    except StrStopFieldError:
+                        break
                 else:
-                    output = field.build(value, **kwargs)
+                    try:
+                        output = field.build(value, **kwargs)
+                    except StrStopFieldError:
+                        break
             outputs.append(output)
 
         return self._separator.join(outputs)
@@ -54,7 +63,10 @@ class StrStruct(ConstructBase):
     def _parse(self, string, **kwargs):
         outputs = {}
         for index, field in enumerate(self._fields):
-            output = field.parse(string)
+            try:
+                output = field.parse(string, **kwargs)
+            except StrStopFieldError:
+                break
             if field.name is not None and field.name[0] != "_":
                 outputs[field.name] = output
             string = field.parse_left()
