@@ -4,6 +4,7 @@ from .str_construct_exceptions import StrConstructParseError
 class StrFloat(ConstructBase):
     """StrFloat is a class for building and parsing strings that show floating-point
     numeric values. The number of decimal digits can also be specified.
+
         >>> StrFloat(".1f").build(2)
         '2.0'
         >>> StrFloat(".1f").build(2.0)
@@ -15,6 +16,7 @@ class StrFloat(ConstructBase):
 
     The length makes the object more strict when it comes to parsing strings. The following
     raises an ``StrConstructParseError`` exception.
+
         >>> StrFloat(".4f").parse("2.018")
         ...
         strconstruct.str_construct_exceptions.StrConstructParseError: Insufficient
@@ -22,6 +24,7 @@ class StrFloat(ConstructBase):
 
     When a length is not specified, parsing becomes greedy, as far as there is parsable
     character.
+
         >>> StrFloat("f").parse("19.98765@")
         19.98765
         >>> StrFloat(".2f").parse("19.18765@")

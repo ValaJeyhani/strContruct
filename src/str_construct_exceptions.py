@@ -1,28 +1,15 @@
-
 class StrConstructError(ValueError):
-    """_summary_
+    """StrConstruct base exception. All other exceptions in StrConstruct inherit
+    from this exceptions."""
 
-    Args:
-        ValueError (_type_): _description_
-    """
-
-class StrConstructMismatchingFormatError(StrConstructError):
-    """_summary_
-
-    Args:
-        StrConstructError (_type_): _description_
-    """
 
 class StrConstructParseError(StrConstructError):
-    """_summary_
+    """Raised when parsing fails. All StrConstruct objects can potentially raise this exception."""
 
-    Args:
-        StrConstructError (_type_): _description_
-    """
 
 class StrConstructBuildError(StrConstructError):
-    """_summary_
+    """Raised when building fails. All StrConstruct objects can potentially raise this exception."""
 
-    Args:
-        StrConstructError (_type_): _description_
-    """
+
+class StrStopFieldError(StrConstructError):
+    """Raised only by StrStopIf and when its condition is met."""

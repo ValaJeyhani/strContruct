@@ -7,6 +7,7 @@ from .str_construct_exceptions import StrConstructParseError, StrConstructBuildE
 class StrSwitch(ConstructBase):
     """StrSwitch helps with running different build/parse paths depending on a set
     of conditions, similar to switch statement in languages like C.
+
         >>> from strconstruct import StrSwitch, StrInt, StrFloat
         >>> d = StrSwitch(
         ...     1,
@@ -72,24 +73,24 @@ class StrSwitch(ConstructBase):
 
     Parsing provides a similar functionality
 
-    >>> d = StrSwitch(
-    ...     lambda ctx: 1,
-    ...     {
-    ...         1: StrFloat("0.1f"),
-    ...         2: StrConst("@")
-    ...     }
-    ... )
-    >>> d.parse("2.0")
-    2.0
-    >>> d = StrSwitch(
-    ...     lambda ctx: 2,
-    ...     {
-    ...         1: StrFloat("0.1f"),
-    ...         2: StrConst("@")
-    ...     }
-    ... )
-    >>> d.parse("@")
-    '@'
+        >>> d = StrSwitch(
+        ...     lambda ctx: 1,
+        ...     {
+        ...         1: StrFloat("0.1f"),
+        ...         2: StrConst("@")
+        ...     }
+        ... )
+        >>> d.parse("2.0")
+        2.0
+        >>> d = StrSwitch(
+        ...     lambda ctx: 2,
+        ...     {
+        ...         1: StrFloat("0.1f"),
+        ...         2: StrConst("@")
+        ...     }
+        ... )
+        >>> d.parse("@")
+        '@'
     """
     def __init__(self, condition: typing.Any, cases: dict, default: ConstructBase = None):
         """
