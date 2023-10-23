@@ -154,19 +154,18 @@ class StrSwitch(ConstructBase):
             subconstruct = self._default
         return subconstruct.build(value, **kwargs)
 
-    def _parse(self, string, **kwargs):
+    def _parse(self, string, **ctx):
         """Backend method for parsing numeric strings
 
         Args:
             string: The input string
-            **kwargs: Other values that might be provided to the build method as additional
+            **ctx: Other values that might be provided to the build method as additional
                 context. Can be used for providing value to the condition. See
                 :func:`~StrSwitch._build` for more info.
 
         Returns:
             The parsed content. The type depends on the selected case
         """
-        ctx = kwargs
         condition = self._condition
         if callable(condition):
             condition = condition(ctx)
@@ -176,4 +175,6 @@ class StrSwitch(ConstructBase):
             if self._default is None:
                 raise StrConstructParseError("No match found and default is not set")
             subconstruct = self._default
-        return subconstruct.parse(string, **kwargs)
+        output = subconstruct.parse(string, **ctx)
+        self._parse_left = subconstruct.parse_left()
+        return output

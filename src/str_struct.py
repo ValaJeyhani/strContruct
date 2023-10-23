@@ -24,18 +24,20 @@ class StrStruct(ConstructBase):
             raise TypeError("Division is support only for strings")
         return StrStruct(name=other, separator=self._separator, *self._fields)
 
-    def _build(self, values, **kwargs):
+    def _build(self, values, **ctx):
         if not isinstance(values, dict):
             raise TypeError("The value for building an StrConstruct should be a dict")
 
         outputs = []
         for field in self._fields:
+            if field.name in ctx.keys():
+                raise ValueError(f"Got two definitions for {field.name}")
             if field.name is None:
                 # Well there is no name. So we can't find a given value. In this case, the
                 # build method of the corresponding object is expected to be able to build
                 # without a give value. Let's give it a try.
                 try:
-                    output = field.build(**kwargs)
+                    output = field.build(**ctx)
                 except StrStopFieldError:
                     # Nothing problematic. The StopIf construct has signaled to stop building
                     break
@@ -48,28 +50,33 @@ class StrStruct(ConstructBase):
                 except KeyError:
                     # If the key-value pair is not provided, try to build it with no value
                     try:
-                        output = field.build(**kwargs)
+                        output = field.build(**ctx)
                     except StrStopFieldError:
                         break
                 else:
                     try:
-                        output = field.build(value, **kwargs)
+                        output = field.build(value, **ctx)
                     except StrStopFieldError:
                         break
+                ctx[field.name] = value
             outputs.append(output)
 
         return self._separator.join(outputs)
 
-    def _parse(self, string, **kwargs):
+    def _parse(self, string, **ctx):
         outputs = {}
         for index, field in enumerate(self._fields):
             try:
-                output = field.parse(string, **kwargs)
+                output = field.parse(string, **ctx)
             except StrStopFieldError:
                 break
             if field.name is not None and field.name[0] != "_":
                 outputs[field.name] = output
+                if field.name in ctx.keys():
+                    raise ValueError(f"Got two definitions for {field.name}")
+                ctx[field.name] = output
             string = field.parse_left()
+            self._parse_left = string
 
             # No need to check the separator for the last item
             if index != (len(self._fields) - 1) and self._separator != "":

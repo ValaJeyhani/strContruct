@@ -1,5 +1,6 @@
 from .construct_base import ConstructBase
 
+
 class StrDefault(ConstructBase):
     def __init__(self, construct, default):
         self._subconstruct = construct
@@ -15,4 +16,6 @@ class StrDefault(ConstructBase):
         return self._subconstruct.build(value)
 
     def _parse(self, string, **kwargs):
-        return self._subconstruct.parse(string)
+        output = self._subconstruct.parse(string)
+        self._parse_left = self._subconstruct.parse_left()
+        return output
