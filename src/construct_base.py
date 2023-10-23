@@ -30,7 +30,7 @@ class ConstructBase:
 
     def parse_left(self):
         if self._parse_left is None:
-            raise RuntimeError("No parse has been requested or the last one failed")
+            raise RuntimeError("No parse has been requested for the last one failed")
         output = self._parse_left
         self._parse_left = None
         return output

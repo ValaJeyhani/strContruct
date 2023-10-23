@@ -1,6 +1,8 @@
 import pytest
 
-from strconstruct import StrInt, StrFloat, StrStruct, StrConst, StrDefault, StrConstructParseError
+from strconstruct import (
+    StrInt, StrFloat, StrStruct, StrConst, StrDefault, StrConstructParseError, StrSwitch
+)
 
 
 class TestStrStruct:
@@ -205,3 +207,38 @@ class TestStrStruct:
             }
         )
         assert output == "12-"
+
+    def test_with_context(self):
+        protocol = StrStruct(
+            StrConst(">"),
+            "register" / StrDefault(StrInt("d"), 17),
+            StrConst(","),
+            "value1" / StrSwitch(
+                lambda this: this["register"],
+                {
+                    1: StrFloat("0.1f"),
+                    2: StrInt("d"),
+                    3: StrInt("02X"),
+                },
+                default=StrInt("03X"),
+            ),
+            StrConst("\r"),
+        )
+        assert protocol.build({"register": 3, "value1": 16}) == ">3,10\r"
+        assert protocol.build({"register": 2, "value1": 16}) == ">2,16\r"
+        assert protocol.build({"register": 1, "value1": 16}) == ">1,16.0\r"
+        assert protocol.build({"register": 4, "value1": 16}) == ">4,010\r"
+
+        assert protocol.parse(">3,10\r") == {"register": 3, "value1": 16}
+        assert protocol.parse(">2,199\r") == {"register": 2, "value1": 199}
+        assert protocol.parse(">1,78.4\r") == {"register": 1, "value1": 78.4}
+        assert protocol.parse(">4,020\r") == {"register": 4, "value1": 32}
+
+    def test_double_context(self):
+        protocol = StrStruct(
+            "n" / StrInt("d")
+        )
+        with pytest.raises(ValueError):
+            protocol.build({"n": 2}, n=3)
+        with pytest.raises(ValueError):
+            protocol.parse("2", n=3)
