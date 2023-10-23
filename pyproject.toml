@@ -8,6 +8,7 @@ name = "strconstruct"
 version = "0.0.1"
 requires-python = ">=3.6"
 description = "A declarative parser and builder for string-based protocols"
+readme = "README.md"
 license = {file = "LICENSE"}
 keywords = ["protocol", "declarative", "parse", "build", "string"]
 dependencies = []
@@ -16,7 +17,6 @@ dependencies = []
 strconstruct = "src"
 
 [project.urls]
-# TODO: FIx the following URLs once the repo is public
 Homepage = "https://github.com/ValaJeyhani/strContruct"
-Documentation = "https://github.com/ValaJeyhani/strContruct"
+Documentation = "https://strconstruct.readthedocs.io/en/latest/"
 Repository = "https://github.com/ValaJeyhani/strContruct"

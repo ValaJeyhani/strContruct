@@ -2,7 +2,7 @@ StrConstruct
 ============
 
 StrConstruct is declarative parser and builder for string-based data/protocols with a
-syntax similar to the popular `Construct <https://construct.readthedocs.io/en/
+syntax similar to the `Construct <https://construct.readthedocs.io/en/
 latest/index.html>`_ python package.
 
 .. toctree::
