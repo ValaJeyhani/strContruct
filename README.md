@@ -43,3 +43,8 @@ Before going any further an example might help. Here is an example.
 
 # Documentation
 Documentation can be found [here](https://strconstruct.readthedocs.io/en/latest/)
+
+# Running Unit Tests
+Unit tests can be run using `pytest`. Simply, navigate to the `./test/unit` folder and
+run `python -m pytest -vvvs`. Note that the package needs to be installed before running
+the tests.
