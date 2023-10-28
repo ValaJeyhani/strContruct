@@ -112,14 +112,14 @@ class StrSwitch(ConstructBase):
         self._cases = cases
         self._default = default
 
-    def _build(self, value, **kwargs) -> str:
+    def _build(self, _value_, **kwargs) -> str:
         """Backend method for building numeric strings
 
         If the provide ``condition`` is callable, this method will call it to get a value and
         decide which build path should be take.
 
         Args:
-            value: The value to be built
+            _value_: The value to be built
             **kwargs: Other values that might be provided to the build method as additional
                 context. Can be used for providing value to the condition
 
@@ -152,7 +152,7 @@ class StrSwitch(ConstructBase):
             if self._default is None:
                 raise StrConstructBuildError("No match found and default is not set")
             subconstruct = self._default
-        return subconstruct.build(value, **kwargs)
+        return subconstruct.build(_value_, **kwargs)
 
     def _parse(self, string, **ctx):
         """Backend method for parsing numeric strings

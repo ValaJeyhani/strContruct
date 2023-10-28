@@ -91,18 +91,18 @@ class StrInt(ConstructBase):
         except ValueError:
             self._format_length = None
 
-    def _build(self, value, **kwargs) -> str:
+    def _build(self, _value_, **kwargs) -> str:
         """Backend method for building numeric strings
 
         Args:
-            value: The value to be built
+            _value_: The value to be built
             **kwargs: Other values that might be provided to the build method as additional
                 context. Ignore by StrInt.
 
         Returns:
             The built string
         """
-        return f"{self._format}".format(value)
+        return f"{self._format}".format(_value_)
 
     def _parse(self, string, **kwargs) -> int:
         """Backend method for parsing numeric strings

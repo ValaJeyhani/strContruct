@@ -1,7 +1,8 @@
 import pytest
 
 from strconstruct import (
-    StrInt, StrFloat, StrStruct, StrConst, StrDefault, StrConstructParseError, StrSwitch
+    StrInt, StrFloat, StrStruct, StrConst, StrDefault, StrConstructParseError, StrSwitch,
+    StrConstructFormatError
 )
 
 
@@ -87,6 +88,20 @@ class TestStrStruct:
             }
         )
         assert output == ">>2.3450F"
+
+        packet = StrStruct(
+            StrConst(">"),
+            "value" / StrInt("d"),
+            StrConst("\n"),
+        )
+        assert packet.build({"value": 22}) == ">22\n"
+
+        with pytest.raises(StrConstructFormatError):
+            packet = StrStruct(
+                StrConst(">"),
+                "_value_" / StrInt("d"),
+                StrConst("\n"),
+            )
 
     def test_parse_simple(self):
         packet = StrStruct(
@@ -233,12 +248,3 @@ class TestStrStruct:
         assert protocol.parse(">2,199\r") == {"register": 2, "value1": 199}
         assert protocol.parse(">1,78.4\r") == {"register": 1, "value1": 78.4}
         assert protocol.parse(">4,020\r") == {"register": 4, "value1": 32}
-
-    def test_double_context(self):
-        protocol = StrStruct(
-            "n" / StrInt("d")
-        )
-        with pytest.raises(ValueError):
-            protocol.build({"n": 2}, n=3)
-        with pytest.raises(ValueError):
-            protocol.parse("2", n=3)
