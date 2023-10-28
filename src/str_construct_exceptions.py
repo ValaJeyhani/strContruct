@@ -3,6 +3,9 @@ class StrConstructError(ValueError):
     from this exceptions."""
 
 
+class StrConstructFormatError(StrConstructError):
+    """Raised when building a StrConstruct object if a format is problematic."""
+
 class StrConstructParseError(StrConstructError):
     """Raised when parsing fails. All StrConstruct objects can potentially raise this exception."""
 

@@ -52,12 +52,12 @@ class StrStopIf(ConstructBase):
         self._condition = condition
         self.name = None  # This should be done in the base class
 
-    def _build(self, value, **kwargs) -> str:
+    def _build(self, _value_, **kwargs) -> str:
         """Backend method for building. This class does not build anything. If the condition
         is not met, it simply returns an empty string.
 
         Args:
-            string: The input string. Will be ignored by this class
+            _value_: The value to build. Will be ignored by this class
             **kwargs: Other values that might be provided to the build method as additional
                 context.
 

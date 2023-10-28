@@ -58,18 +58,18 @@ class StrFloat(ConstructBase):
         except (ValueError, IndexError):
             self._format_length = None
 
-    def _build(self, value, **kwargs) -> str:
+    def _build(self, _value_, **kwargs) -> str:
         """Backend method for building strings representing floating-point numbers
 
         Args:
-            value: The value to be built
+            _value_: The value to be built
             **kwargs: Other values that might be provided to the build method as additional
                 context. Ignore by StrFloat.
 
         Returns:
             The built string
         """
-        return f"{self._format}".format(value)
+        return f"{self._format}".format(_value_)
 
     def _parse(self, string, **kwargs) -> float:
         """Backend method for parsing strings representing floating-point numbers

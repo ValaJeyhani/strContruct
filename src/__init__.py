@@ -1,5 +1,7 @@
 from .str_struct import StrStruct
 
+from .construct_base import ConstructBase
+
 from .str_int import StrInt
 from .str_float import StrFloat
 from .str_const import StrConst
