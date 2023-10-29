@@ -2,7 +2,8 @@ import pytest
 
 from strconstruct import StrIf, StrInt, StrFloat, StrStruct, StrConst
 
-class TestStrStopIf:
+
+class TestStrIf:
     def test_condition_type(self):
         with pytest.raises(TypeError):
             StrIf(2)
