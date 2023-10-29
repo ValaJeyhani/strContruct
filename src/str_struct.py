@@ -111,7 +111,7 @@ class StrStruct(ConstructBase):
         '2:0F:3.10'
 
     """
-    def __init__(self, *args, separator=""):
+    def __init__(self, *args: ConstructBase, separator: str = ""):
         """
         Args:
             *args: A set of StrConstructs objects. They can be named, nameless or have
@@ -129,6 +129,19 @@ class StrStruct(ConstructBase):
         self._separator = separator
 
     def _build(self, values, **ctx):
+        """Backend method for building
+
+        Args:
+            _value_: The value to be built
+            **ctx: Other values that might be provided to the build method as additional
+                context. StrStruct passes this to its child sub-StrConstruct objects.
+                It also adds to this context every time an StrConstruct object is build.
+                That's how the child StrConstruct objects have access to the context, which
+                includes both user-defined and build contexts.
+
+        Returns:
+            The built string
+        """
         if not isinstance(values, dict):
             raise TypeError("The value for building an StrConstruct should be a dict")
 
@@ -161,29 +174,45 @@ class StrStruct(ConstructBase):
                     except StrStopFieldError:
                         break
                 ctx[field.name] = value
-            outputs.append(output)
+            # Some fields, if they build nothing (like StrIf when its condition doesn't hold),
+            # return empty strings
+            if output != "":
+                outputs.append(output)
 
         return self._separator.join(outputs)
 
     def _parse(self, string, **ctx):
         outputs = {}
+        missing_separator_error_pending = False
         for index, field in enumerate(self._fields):
             try:
                 output = field.parse(string, **ctx)
             except StrStopFieldError:
                 break
             if field.name is not None and field.name[0] != "_":
-                outputs[field.name] = output
                 if field.name in ctx.keys():
                     raise ValueError(f"Got two definitions for {field.name}")
                 ctx[field.name] = output
+            # Some fields, if they parse nothing (like StrIf when its condition doesn't hold),
+            # return None
+            if output is None:
+                continue
+            if field.name is not None and field.name[0] != "_":
+                outputs[field.name] = output
             string = field.parse_left()
             self._parse_left = string
 
+            if missing_separator_error_pending is True:
+                # If we reach this point, the current StrConstruct could build and if there
+                # is an exception pending, raise it.
+                raise StrConstructParseError(f"Separator ('{self._separator}') not found")
             # No need to check the separator for the last item
             if index != (len(self._fields) - 1) and self._separator != "":
                 if not string.startswith(self._separator):
-                    raise StrConstructParseError(f"Separator ('{self._separator}') not found")
+                    # We didn't find the separator and it's not the last item. But don't
+                    # raise an error just yet. The next item might parse nothing. If the next
+                    # parses something, then we need to raise the error.
+                    missing_separator_error_pending = True
                 string = string[len(self._separator):]
 
         return outputs

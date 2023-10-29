@@ -46,6 +46,9 @@ class StrStopIf(ConstructBase):
         """
         Args:
             condition: The condition to determine whether build/parse should be stopped.
+                If it is a callable, it should accept one argument (for the context) and
+                return a boolean value. If it returns True, ``StrStopFieldError`` will
+                be raised by the ``build`` and ``parse`` methods.
         """
         if not isinstance(condition, bool) and not callable(condition):
             raise TypeError("Condition for StopIf should either be bool or callable")
