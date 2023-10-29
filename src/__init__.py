@@ -8,6 +8,7 @@ from .str_const import StrConst
 from .str_default import StrDefault
 
 from .str_if import StrIf
+from .str_if_then_else import StrIfThenElse
 from .str_switch import StrSwitch
 from .str_stop_if import StrStopIf
 
