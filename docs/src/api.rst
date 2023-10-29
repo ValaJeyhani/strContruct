@@ -49,6 +49,14 @@ StrSwitch
    :show-inheritance:
    :special-members: __init__
 
+StrIf
+-----
+.. autoclass:: strconstruct.StrIf
+   :members: _build, _parse
+   :undoc-members:
+   :show-inheritance:
+   :special-members: __init__
+
 StrStopIf
 ---------
 .. autoclass:: strconstruct.StrStopIf

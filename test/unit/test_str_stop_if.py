@@ -89,7 +89,7 @@ class TestStrStopIf:
         )
         assert packet.parse("2", n=True) == {"field1": 2}
         assert packet.parse("2,3.10", n=True) == {"field1": 2}
-        assert packet.parse("2,3.10", n=False) == {"field1": 2, "field2": 3.10, "field_stop": None}
+        assert packet.parse("2,3.10", n=False) == {"field1": 2, "field2": 3.10}
 
         packet = StrStruct(
             "field1" / StrInt("d"),

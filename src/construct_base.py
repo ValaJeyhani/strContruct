@@ -122,6 +122,7 @@ class ConstructBase:
         Returns:
             The parsed value
         """
+        self._parse_left = None
         return self._parse(string, **kwargs)
 
     def parse_left(self):
