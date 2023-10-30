@@ -168,12 +168,17 @@ class StrStruct(ConstructBase):
                         output = field.build(**ctx)
                     except StrStopFieldError:
                         break
+                    # Some constructs can build without values. But we still need to add
+                    # their value to the context.
+                    last_build = field.last_built()
+                    if last_build is not None:
+                        ctx[field.name] = last_build
                 else:
                     try:
                         output = field.build(value, **ctx)
                     except StrStopFieldError:
                         break
-                ctx[field.name] = value
+                    ctx[field.name] = value  # Could use field.last_built() as well.
             # Some fields, if they build nothing (like StrIf when its condition doesn't hold),
             # return empty strings
             if output != "":

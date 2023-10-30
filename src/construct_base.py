@@ -125,17 +125,31 @@ class ConstructBase:
         self._parse_left = None
         return self._parse(string, **kwargs)
 
+    def last_built(self):
+        """Returns the value used for building last time
+
+        Note that the value returned by this method is available only once. After the
+        first call (per call to build()), the value is reset.
+
+        This method is specially useful for StrConstructs that can build without input
+        values e.g. StrConst, StrDefault.
+
+        Returns:
+            The value used for the last build.
+        """
+        output = self._last_built
+        self._last_built = None
+        return output
+
     def parse_left(self):
         """The remaining string that was not parsed in the last call to ``parse``.
 
-        Note that this value return by this method is available only once. After the
-        first call, the value is reset.
+        Note that the value returned by this method is available only once. After the
+        first call (per call to parse()), the value is reset.
 
         Returns:
             The remaining string that was not parsed.
         """
-        if self._parse_left is None:
-            raise RuntimeError("No parse has been requested for the last one failed")
         output = self._parse_left
         self._parse_left = None
         return output
