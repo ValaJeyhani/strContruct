@@ -23,20 +23,20 @@ class StrRebuild(ConstructBase):
         ...         StrInt("d"),
         ...         lambda ctx: sum([ctx["stx"], ctx["counter"], ctx["payload"]]) % 256
         ...     ),
-        ...     "etx" / StrConst("\n"),
+        ...     "etx" / StrConst("\\n"),
         ...     separator=","
         ... )
         >>>
         >>> d.build({"counter": 3, "payload": 5})
-        '0C,3,5,20,\n'
+        '0C,3,5,20,\\n'
 
     As said before, parsing doesn't recalculate the fields and checks the outcome against
     the received string.
 
-        >>> d.parse("0C,3,5,20,\n")
-        {'stx': 12, 'counter': 3, 'payload': 5, 'checksum': 20, 'etx': '\n'}
-        >>> d.parse("0C,3,5,21,\n")
-        {'stx': 12, 'counter': 3, 'payload': 5, 'checksum': 21, 'etx': '\n'}
+        >>> d.parse("0C,3,5,20,\\n")
+        {'stx': 12, 'counter': 3, 'payload': 5, 'checksum': 20, 'etx': '\\n'}
+        >>> d.parse("0C,3,5,21,\\n")
+        {'stx': 12, 'counter': 3, 'payload': 5, 'checksum': 21, 'etx': '\\n'}
 
     """
     def __init__(self, subconstruct: ConstructBase, callback: typing.Callable):
@@ -68,9 +68,9 @@ class StrRebuild(ConstructBase):
 
                     >>> d = Rebuild(Int8ub, lambda x: 10)
                     >>> d.build(2)
-                    b'\n'
+                    b'\\n'
                     >>> d.build(20)
-                    b'\n'
+                    b'\\n'
 
         Returns:
             The built string
