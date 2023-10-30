@@ -70,15 +70,14 @@ class StrStopIf(ConstructBase):
         Raises:
             StrStopFieldError: If the stopping condition is met.
         """
+        self._last_built = None
         ctx = kwargs
         if isinstance(self._condition, bool):
             if self._condition is True:
                 raise StrStopFieldError("Found a boolean condition for StopIf. Stopping")
-            else:
-                return ""
 
         # The type of self._condition has been confirmed in __init__
-        if self._condition(ctx):
+        elif self._condition(ctx):
             raise StrStopFieldError("The callable condition for StopIf is met. Stopping")
 
         return ""

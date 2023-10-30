@@ -33,9 +33,12 @@ class StrDefault(ConstructBase):
                 method. Note that this value will be given to the StrConstruct object
                 provided by `construct` and the output string depends on `construct`.
         """
+        self.name = None
+        self._parse_left = None
+        self._last_built = None
+
         self._subconstruct = construct
         self._default = default
-        self.name = None
 
     def _build(self, _value_, **ctx) -> str:
         """Backend method for building default strings
@@ -51,8 +54,10 @@ class StrDefault(ConstructBase):
         # TODO: This should work with empty dict instead of None. See the following link
         # https://construct.readthedocs.io/en/latest/misc.html#default
         if _value_ is None:
+            self._last_built = self._default
             return self._subconstruct.build(self._default)
 
+        self._last_built = _value_
         return self._subconstruct.build(_value_)
 
     def _parse(self, string, **ctx):

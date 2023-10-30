@@ -29,6 +29,9 @@ class StrConst(ConstructBase):
             const: The constant value use for both building and parsing
         """
         self.name = None
+        self._parse_left = None
+        self._last_built = None
+
         self._const = const
 
     def _build(self, _value_, **ctx) -> str:
@@ -45,6 +48,7 @@ class StrConst(ConstructBase):
         if _value_ is not None and _value_ != self._const:
             raise StrConstructBuildError("StrConst needs the same constant value or nothing to build")
 
+        self._last_built = self._const
         return self._const
 
     def _parse(self, string: str, **ctx) -> str:
