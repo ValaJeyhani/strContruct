@@ -48,7 +48,7 @@ class StrIfThenElse(ConstructBase):
                 deferred to this sub-StrConstruct object.
         """
         if not isinstance(condition, bool) and not callable(condition):
-            raise TypeError("Condition for StopIf should either be bool or callable")
+            raise TypeError("Condition for StrIfThenElse should either be bool or callable")
         self._condition = condition
         self._then_subconstruct = then_subconstruct
         self._else_subconstruct = else_subconstruct

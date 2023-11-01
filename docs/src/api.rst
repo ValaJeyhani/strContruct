@@ -81,6 +81,14 @@ StrRebuild
    :show-inheritance:
    :special-members: __init__
 
+StrCheck
+----------
+.. autoclass:: strconstruct.StrCheck
+   :members: _build, _parse
+   :undoc-members:
+   :show-inheritance:
+   :special-members: __init__
+
 Exceptions
 ----------
 .. autoclass:: strconstruct.StrConstructError

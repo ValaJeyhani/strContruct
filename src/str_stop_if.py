@@ -51,7 +51,7 @@ class StrStopIf(ConstructBase):
                 be raised by the ``build`` and ``parse`` methods.
         """
         if not isinstance(condition, bool) and not callable(condition):
-            raise TypeError("Condition for StopIf should either be bool or callable")
+            raise TypeError("Condition for StrStopIf should either be bool or callable")
         self._condition = condition
         self.name = None  # This should be done in the base class
 

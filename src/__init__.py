@@ -12,5 +12,6 @@ from .str_stop_if import StrStopIf
 
 from .str_struct import StrStruct
 from .str_rebuild import StrRebuild
+from .str_check import StrCheck
 
 from .str_construct_exceptions import *
