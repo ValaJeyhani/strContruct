@@ -10,7 +10,7 @@ similar to the [Construct](
 of parsing and building strings based on the defined protocols. This makes code more
 readable, concise and maintainable.
 
-Before going any further an example might help. Here is an example.
+Here is an example.
 ```
 >>> from strconstruct import StrInt, StrFloat, StrConst, StrStruct, StrDefault, StrSwitch
 >>> protocol = StrStruct(
@@ -47,4 +47,4 @@ Documentation can be found [here](https://strconstruct.readthedocs.io/en/latest/
 # Running Unit Tests
 Unit tests can be run using `pytest`. Simply, navigate to the `./test/unit` folder and
 run `python -m pytest -vvvs`. Note that the package needs to be installed before running
-the tests.
+the tests (`cd StrConstruct && python -m pip install -e .`).
