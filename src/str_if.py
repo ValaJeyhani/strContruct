@@ -71,7 +71,7 @@ class StrIf(ConstructBase):
                 building will be deferred to this sub-StrConstruct object.
         """
         if not isinstance(condition, bool) and not callable(condition):
-            raise TypeError("Condition for StopIf should either be bool or callable")
+            raise TypeError("Condition for StrIf should either be bool or callable")
         self._condition = condition
         self._subconstruct = subconstruct
         self.name = None  # This should be done in the base class

@@ -16,3 +16,6 @@ class StrConstructBuildError(StrConstructError):
 
 class StrStopFieldError(StrConstructError):
     """Raised only by StrStopIf and when its condition is met."""
+
+class StrCheckError(StrConstructError):
+    """Raised only by StrCheck and when its condition is not met."""

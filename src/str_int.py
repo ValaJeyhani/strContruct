@@ -1,6 +1,7 @@
 from .construct_base import ConstructBase
 from .str_construct_exceptions import StrConstructParseError
 
+
 class StrInt(ConstructBase):
     """StrInt can be used for building and parsing numeric fields. An StrInt, needs a format to
     be constructed, similar to other str-construct classes. The constructed objects can be used
